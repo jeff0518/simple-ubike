@@ -8,6 +8,11 @@ function MainNavigation() {
       <div className={style.loge}>
         <Link href="/">Next uBike</Link>
       </div>
+      <input
+        type="checkbox"
+        className={style.toggle}
+        id="navbar-toggle"
+      ></input>
       <nav>
         <ul>
           <li>

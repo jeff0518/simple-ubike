@@ -10,6 +10,55 @@
   justify-content: space-between;
   padding: 0 10%;
 
+  .toggle {
+    margin: 0;
+  }
+
+  .toggle:checked {
+    margin-left: 15px;
+  }
+
+  .toggle:checked ~ nav {
+    // transform: scale(1, 1);
+    animation: Hamburger 0.5s ease-in-out 0s 1 forwards;
+  }
+
+  nav {
+    position: absolute;
+    top: 5rem;
+    background: #ffffff;
+    width: 100%;
+    transition: display 0.3s ease-out;
+    transform: scale(1, 0);
+    transform-origin: top;
+    transition: transform 0.3s ease-out;
+  }
+
+  ul {
+    margin: 1.4rem 0;
+    opacity: 0;
+  }
+
+  .toggle:checked ~ nav ul {
+    // opacity: 1;
+    // transition: opacity 0.2s ease-out 0.15s;
+    animation: Hamburger 0.5s ease-in-out 0s 1 forwards;
+  }
+
+  @keyframes Hamburger {
+    0% {
+      transform: scale(1, 0);
+      opacity: 0;
+    }
+    75% {
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1, 1);
+      opacity: 1;
+    }
+  }
+
   a {
     text-decoration: none;
     color: color.$gray-10;
