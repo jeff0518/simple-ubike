@@ -1,10 +1,12 @@
-import style from "./ButtonUI.module.css";
+import style from "./ButtonUI.module.scss";
 
 function ButtonUI(props) {
-  const { text, btnStyle } = props;
+  const { text, btnStyle, onClick } = props;
   return (
     <>
-      <button className={style[btnStyle]}>{text}</button>
+      <button className={style[btnStyle]} onClick={onClick}>
+        {text}
+      </button>
     </>
   );
 }

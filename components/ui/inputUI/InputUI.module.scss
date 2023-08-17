@@ -1,0 +1,23 @@
+@use "../../../styles/colors" as color;
+
+.control {
+  margin-bottom: 0.5rem;
+
+  label {
+    display: block;
+    color: color.$gray-1;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    padding: 0.25rem;
+    width: 100%;
+    border: 1px solid color.$gray-1;
+    border-radius: 4px;
+    background-color: color.$gray-3;
+    font: inherit;
+    color: color.$brand-color;
+    text-align: left;
+  }
+}

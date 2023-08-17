@@ -1,13 +1,15 @@
-import style from "./InputUI.module.css";
+import React from "react";
 
-function InputUI(props) {
-  const { inputId, inputType, inputText, inputStyle } = props;
+import style from "./InputUI.module.scss";
+
+const InputUI = React.forwardRef((props, ref) => {
+  const { inputId, inputType, inputText, inputStyle, inputRef } = props;
   return (
     <div className={style[inputStyle]}>
       <label htmlFor={inputId}>{inputText}</label>
-      <input type={inputType} id={inputId} required></input>
+      <input type={inputType} id={inputId} ref={ref} required></input>
     </div>
   );
-}
+});
 
 export default InputUI;

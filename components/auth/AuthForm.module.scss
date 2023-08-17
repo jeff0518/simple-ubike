@@ -1,0 +1,21 @@
+@use "../../styles/colors" as color;
+
+.auth {
+  width: 80%;
+  margin: 10rem auto;
+  padding: 1rem;
+  text-align: center;
+  background-color: color.$brand-color;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
+  .div__btn {
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .auth {
+    width: 50%;
+  }
+}
