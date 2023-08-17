@@ -29,6 +29,9 @@ function MainNavigation() {
           </li>
         </ul>
       </nav>
+      <label className={style.toggle__label} htmlFor="navbar-toggle">
+        <span className={style.hamburger} />
+      </label>
     </header>
   );
 }
