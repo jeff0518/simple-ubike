@@ -1,9 +1,33 @@
+@use "../../../styles/colors" as color;
+@use "../../../styles/mixin";
+
 .btn__pill {
   width: 100%;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
   border-radius: 50px;
   cursor: pointer;
+}
+
+.btn__link {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: unset;
+  border: none;
+  @include mixin.font-setting(1rem, 400, white);
+  border-bottom: 1px solid color.$assistant-purple-color;
+  cursor: pointer;
+}
+
+.btn__pill:hover {
+  background-color: color.$primary-color;
+  color: color.$assistant-gray-color;
+}
+.btn__link:hover {
+  color: color.$primary-color;
 }

@@ -48,13 +48,13 @@ function AuthForm() {
 
           {isLogin ? (
             <ButtonUI
-              btnStyle="btn__pill"
+              btnStyle="btn__link"
               text="Create new account"
               onClick={authHandler}
             />
           ) : (
             <ButtonUI
-              btnStyle="btn__pill"
+              btnStyle="btn__link"
               text="Login with existing account"
               onClick={authHandler}
             />
