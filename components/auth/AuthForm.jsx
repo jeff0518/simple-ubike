@@ -7,6 +7,7 @@ import ButtonUI from "../ui/buttonUI/ButtonUI";
 import style from "./AuthForm.module.scss";
 
 async function createUser(email, password) {
+  console.log("it is createUser");
   const response = await fetch("/api/auth/signup", {
     method: "POST",
     body: JSON.stringify({ email, password }),
@@ -38,17 +39,16 @@ function AuthForm() {
     event.preventDefault();
     const enterEmail = emailInputRef.current.value;
     const enterPassword = passwordInputRef.current.value;
-
-    if (isLogin) {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: enterEmail,
-        password: enterPassword,
-      });
-
-      if (!result) {
-        router.replace("/");
-      }
+    console.log("this is auth form");
+    if (!isLogin) {
+      // const result = await signIn("credentials", {
+      //   redirect: false,
+      //   email: enterEmail,
+      //   password: enterPassword,
+      // });
+      // if (!result) {
+      //   router.replace("/");
+      // }
     } else {
       try {
         const result = await createUser(enterEmail, enterPassword);
@@ -78,28 +78,29 @@ function AuthForm() {
             inputText="Your Password"
             ref={passwordInputRef}
           />
-        </form>
-        <div className={style.div__btn}>
-          {isLogin ? (
-            <ButtonUI btnStyle="btn__pill" text="Login" />
-          ) : (
-            <ButtonUI btnStyle="btn__pill" text="Create Account" />
-          )}
 
-          {isLogin ? (
-            <ButtonUI
-              btnStyle="btn__link"
-              text="Create new account"
-              onClick={authHandler}
-            />
-          ) : (
-            <ButtonUI
-              btnStyle="btn__link"
-              text="Login with existing account"
-              onClick={authHandler}
-            />
-          )}
-        </div>
+          <div className={style.div__btn}>
+            {isLogin ? (
+              <ButtonUI btnStyle="btn__pill" text="Login" />
+            ) : (
+              <ButtonUI btnStyle="btn__pill" text="Create Account" />
+            )}
+
+            {isLogin ? (
+              <ButtonUI
+                btnStyle="btn__link"
+                text="Create new account"
+                onClick={authHandler}
+              />
+            ) : (
+              <ButtonUI
+                btnStyle="btn__link"
+                text="Login with existing account"
+                onClick={authHandler}
+              />
+            )}
+          </div>
+        </form>
       </section>
     </>
   );

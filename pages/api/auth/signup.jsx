@@ -1,4 +1,4 @@
-import { hashPassword, hashPassword } from "@/components/lib/auth";
+import { hashPassword } from "../../../components/lib/auth";
 import { connectToDatabase } from "@/components/lib/db";
 
 async function handler(req, res) {
@@ -24,20 +24,18 @@ async function handler(req, res) {
 
   const client = await connectToDatabase();
   const db = client.db();
+  // const existingUser = await db.collection(user).findOne({ email: email });
 
-  const existingUser = await db.collection(user).findOne({ email: email });
-
-  if (existingUser) {
-    res.status(422).json({ message: "User exists already" });
-    client.close();
-    return;
-  }
-
-  const hashPassword = await hashPassword(password);
+  // if (existingUser) {
+  //   res.status(422).json({ message: "User exists already" });
+  //   client.close();
+  //   return;
+  // }
+  const hashedPassword = await hashPassword(password);
 
   const result = await db.collection("user").insertOne({
     email: email,
-    password: hashPassword,
+    password: hashedPassword,
   });
 
   res.status(201).json({ message: "Created user!" });
