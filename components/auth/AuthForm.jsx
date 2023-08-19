@@ -1,22 +1,62 @@
 import { useState, useRef } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import InputUI from "../ui/inputUI/InputUI";
 import ButtonUI from "../ui/buttonUI/ButtonUI";
 
 import style from "./AuthForm.module.scss";
 
+async function createUser(email, password) {
+  const response = await fetch("/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Something went wrong");
+  }
+
+  return data;
+}
+
 function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const router = useRouter();
 
   function authHandler() {
     setIsLogin((prevState) => !prevState);
   }
 
-  function submitHandler(event) {
+  async function submitHandler(event) {
     event.preventDefault();
     const enterEmail = emailInputRef.current.value;
     const enterPassword = passwordInputRef.current.value;
+
+    if (isLogin) {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: enterEmail,
+        password: enterPassword,
+      });
+
+      if (!result) {
+        router.replace("/");
+      }
+    } else {
+      try {
+        const result = await createUser(enterEmail, enterPassword);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   return (
