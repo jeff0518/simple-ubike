@@ -20,7 +20,17 @@
   background-color: unset;
   border: none;
   @include mixin.font-setting(1rem, 400, white);
-  border-bottom: 1px solid color.$assistant-purple-color;
+  cursor: pointer;
+}
+
+.btn__link__black {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: unset;
+  border: none;
+  @include mixin.font-setting(1rem, 400, black);
   cursor: pointer;
 }
 
@@ -30,4 +40,7 @@
 }
 .btn__link:hover {
   color: color.$primary-color;
+}
+.btn__link__black:hover {
+  color: color.$gray-4;
 }

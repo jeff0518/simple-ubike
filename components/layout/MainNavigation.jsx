@@ -34,20 +34,25 @@ function MainNavigation() {
       ></input>
       <nav>
         <ul>
-          <li>
-            <Link href="/search">顯示全部</Link>
-          </li>
-          <li>
-            <Link href="/search/one">只顯示1代</Link>
-          </li>
-          <li>
-            <Link href="/search/two">只顯示2代</Link>
-          </li>
+          {session && (
+            <>
+              <li>
+                <Link href="/search">顯示全部</Link>
+              </li>
+              <li>
+                <Link href="/search/one">只顯示1代</Link>
+              </li>
+              <li>
+                <Link href="/search/two">只顯示2代</Link>
+              </li>
+            </>
+          )}
+
           {!session && !loading ? (
             <li>
               <ButtonUI
                 text="登入"
-                btnStyle="btn__link"
+                btnStyle="btn__link__black"
                 onClick={loginHandler}
               />
             </li>
@@ -55,7 +60,7 @@ function MainNavigation() {
             <li>
               <ButtonUI
                 text="登出"
-                btnStyle="btn__link"
+                btnStyle="btn__link__black"
                 onClick={logoutHandler}
               />
             </li>

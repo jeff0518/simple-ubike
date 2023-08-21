@@ -17,6 +17,10 @@
     font-weight: 500;
   }
 
+  a:hover {
+    color: color.$gray-4;
+  }
+
   .loge {
     //@include font-setting(2rem, 500, color.$gray-11);
     font-size: 2rem;

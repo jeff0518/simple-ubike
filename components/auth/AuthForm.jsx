@@ -7,7 +7,6 @@ import ButtonUI from "../ui/buttonUI/ButtonUI";
 import style from "./AuthForm.module.scss";
 
 async function createUser(email, password) {
-  console.log("it is createUser");
   const response = await fetch("/api/auth/signup", {
     method: "POST",
     body: JSON.stringify({ email, password }),
@@ -47,13 +46,14 @@ function AuthForm() {
         password: enterPassword,
       });
 
-      console.log(result);
-      // if (!result) {
-      //   router.replace("/");
-      // }
+      if (!result) {
+        router.replace("/");
+      }
+      router.push("/search");
     } else {
       try {
         const result = await createUser(enterEmail, enterPassword);
+
         console.log(result);
       } catch (error) {
         console.log(error);
