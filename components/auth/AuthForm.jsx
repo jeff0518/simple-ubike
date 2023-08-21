@@ -40,7 +40,7 @@ function AuthForm() {
     const enterEmail = emailInputRef.current.value;
     const enterPassword = passwordInputRef.current.value;
     console.log("this is auth form");
-    if (!isLogin) {
+    if (isLogin) {
       // const result = await signIn("credentials", {
       //   redirect: false,
       //   email: enterEmail,

@@ -24,15 +24,15 @@ async function handler(req, res) {
 
   const client = await connectToDatabase();
   const db = client.db();
-  // const existingUser = await db.collection(user).findOne({ email: email });
+  //檢查資料庫是否有相同帳號
+  const existingUser = await db.collection("user").findOne({ email: email });
+  if (existingUser) {
+    res.status(422).json({ message: "User exists already" });
+    client.close();
+    return;
+  }
 
-  // if (existingUser) {
-  //   res.status(422).json({ message: "User exists already" });
-  //   client.close();
-  //   return;
-  // }
   const hashedPassword = await hashPassword(password);
-
   const result = await db.collection("user").insertOne({
     email: email,
     password: hashedPassword,
