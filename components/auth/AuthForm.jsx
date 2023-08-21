@@ -39,13 +39,15 @@ function AuthForm() {
     event.preventDefault();
     const enterEmail = emailInputRef.current.value;
     const enterPassword = passwordInputRef.current.value;
-    console.log("this is auth form");
+
     if (isLogin) {
-      // const result = await signIn("credentials", {
-      //   redirect: false,
-      //   email: enterEmail,
-      //   password: enterPassword,
-      // });
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: enterEmail,
+        password: enterPassword,
+      });
+
+      console.log(result);
       // if (!result) {
       //   router.replace("/");
       // }
