@@ -16,13 +16,3 @@ export async function getServerSideProps(context) {
     props: { session },
   };
 }
-
-function SearchAllPage() {
-  return (
-    <>
-      <h1>This is search page</h1>
-    </>
-  );
-}
-
-export default SearchAllPage;
