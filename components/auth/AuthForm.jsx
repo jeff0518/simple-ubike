@@ -46,7 +46,7 @@ function AuthForm() {
         password: enterPassword,
       });
 
-      if (!result) {
+      if (!result.error) {
         router.replace("/");
       }
       router.push("/search");
