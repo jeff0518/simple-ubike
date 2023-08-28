@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/react";
-import { useLoadScript } from "@react-google-maps/api";
+//從useLoadScript()改成這個
+import { useJsApiLoader } from "@react-google-maps/api";
 import Map from "@/components/map/Map";
 
 export async function getServerSideProps(context) {
@@ -20,14 +21,13 @@ export async function getServerSideProps(context) {
 }
 
 function SearchAllPage() {
-  const { isLoaded } = useLoadScript({
+  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
   return (
     <>
-      <h1>This is search page</h1>
       <Map />
     </>
   );
