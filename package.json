@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@googlemaps/react-wrapper": "^1.1.35",
     "@react-google-maps/api": "^2.19.2",
     "bcryptjs": "^2.4.3",
     "mongoose": "^7.4.3",
@@ -17,7 +16,8 @@
     "next-auth": "^4.23.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
     "sass": "^1.65.1"

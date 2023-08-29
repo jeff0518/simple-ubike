@@ -1,5 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { GoogleMap, MarkerF, Circle } from "@react-google-maps/api";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import Search from "../search/Search";
 
 import style from "./Map.module.scss";
 import { type } from "os";
@@ -20,6 +25,8 @@ function Map() {
     []
   );
 
+  const screenCenter = {};
+
   //定義了地圖的一些選項
   const options = useMemo(
     () => ({
@@ -35,6 +42,7 @@ function Map() {
     mapRef.current = map;
     setMap(map);
   }, []);
+
   const centerChangeHandler = () => {
     if (time) {
       clearTimeout(time);
@@ -42,13 +50,14 @@ function Map() {
     const newTime = setTimeout(() => {
       if (map) {
         const newCenter = map.getCenter();
-        console.log(newCenter.lat(), newCenter.lng());
+        // console.log(newCenter.lat(), newCenter.lng());
       }
     }, 500);
     setTime(newTime);
   };
   return (
-    <>
+    <div className={style.content}>
+      <Search />
       {/* zoom負責縮放、center地圖中心 */}
       <GoogleMap
         zoom={16}
@@ -60,10 +69,11 @@ function Map() {
       >
         {/* react18要改用MarkerF不能用Marker */}
         <MarkerF position={defaultCenter} />
+        <MarkerF position={screenCenter} />
         <Circle center={defaultCenter} radius={15000} options={farOptions} />
       </GoogleMap>
-      <button onClick={() => map.panTo(defaultCenter)}>回到預設點</button>
-    </>
+      {/* <button onClick={() => map.panTo(defaultCenter)}>回到預設點</button> */}
+    </div>
   );
 }
 
