@@ -21,8 +21,10 @@ export async function getServerSideProps(context) {
 }
 
 function SearchAllPage() {
+  const libraries = ["places"];
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+    libraries,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
