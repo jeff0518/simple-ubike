@@ -12,6 +12,18 @@
   cursor: pointer;
 }
 
+.btn__pill__small {
+  width: 60%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
 .btn__link {
   margin-top: 0.5rem;
   display: flex;

@@ -22,3 +22,22 @@
     text-align: left;
   }
 }
+
+.search {
+  width: 100%;
+
+  label {
+    display: none;
+  }
+
+  input {
+    padding: 0.25rem;
+    width: 100%;
+    border: 1px solid color.$gray-1;
+    border-radius: 50px;
+    background-color: color.$gray-3;
+    font: inherit;
+    color: color.$brand-color;
+    text-align: center;
+  }
+}

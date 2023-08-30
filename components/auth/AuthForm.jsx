@@ -71,14 +71,14 @@ function AuthForm() {
             inputType="email"
             inputStyle="control"
             inputText="Your Email"
-            ref={emailInputRef}
+            inputRef={emailInputRef}
           />
           <InputUI
             inputId="password"
             inputType="password"
             inputStyle="control"
             inputText="Your Password"
-            ref={passwordInputRef}
+            inputRef={passwordInputRef}
           />
 
           <div className={style.div__btn}>
