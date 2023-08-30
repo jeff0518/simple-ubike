@@ -46,7 +46,8 @@
   cursor: pointer;
 }
 
-.btn__pill:hover {
+.btn__pill:hover,
+.btn__pill__small:hover {
   background-color: color.$primary-color;
   color: color.$assistant-gray-color;
 }

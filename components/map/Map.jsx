@@ -7,7 +7,6 @@ import usePlacesAutocomplete, {
 import Search from "../search/Search";
 
 import style from "./Map.module.scss";
-import { type } from "os";
 
 function Map() {
   const mapRef = useRef();
