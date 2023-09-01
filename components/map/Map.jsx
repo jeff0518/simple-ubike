@@ -9,6 +9,18 @@ import Search from "../search/Search";
 
 import style from "./Map.module.scss";
 
+export function debounce(fn, delay = 500) {
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
 function Map() {
   //設定預設中心點（台北101）
   const defaultCenter = useMemo(
@@ -27,11 +39,13 @@ function Map() {
   const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
 
   //返回預設位子或是使用者現在位子
-  const panToDefaultCenterHandle = () => {
+  const panToCurrentCenterHandle = () => {
     map.panTo(currentPosition);
   };
 
-  const panToDestinationHandle = () => {};
+  const panToDestinationHandle = (newValue) => {
+    map.panTo(newValue);
+  };
 
   //定義了地圖的一些選項
   const options = useMemo(
@@ -88,10 +102,11 @@ function Map() {
   return (
     <div className={style.content}>
       <Search
-        defaultCenter={panToDefaultCenterHandle}
+        currentCenter={panToCurrentCenterHandle}
         changeDestination={changeDestinationHandle}
         currentPosition={currentPosition}
         setDirectionsResponse={setDirectionsResponse}
+        panToDestination={panToDestinationHandle}
       />
       {/* zoom負責縮放、center地圖中心 */}
       <GoogleMap
@@ -104,14 +119,13 @@ function Map() {
       >
         {/* react18要改用MarkerF不能用Marker */}
         <MarkerF position={currentPosition} />
-
+        {directionsResponse && <MarkerF position={destination} />}
         {/* 顯示從Ａ到Ｂ的路線 */}
         {/* {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )} */}
         <Circle center={defaultCenter} radius={15000} options={farOptions} />
       </GoogleMap>
-      {/* <button onClick={() => map.panTo(defaultCenter)}>回到預設點</button> */}
     </div>
   );
 }

@@ -1,28 +1,47 @@
 import { TiDelete, TiLocationArrowOutline } from "react-icons/ti";
 import { Autocomplete } from "@react-google-maps/api";
+import { getGeocode, getLatLng } from "use-places-autocomplete";
 
 import InputUI from "../ui/inputUI/InputUI";
 import ButtonUI from "../ui/buttonUI/ButtonUI";
 
 import style from "./Search.module.scss";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 function Search(props) {
   const {
-    defaultCenter,
+    currentCenter,
     changeDestination,
     currentPosition,
     setDirectionsResponse,
+    panToDestination,
   } = props;
+
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const destinationRef = useRef();
+
   //抓取input內容並計算距離跟時間
-  async function calculateRoute() {
+  const calculateRoute = async () => {
     if (destinationRef.current.value === "") {
       return;
     }
-    changeDestination(destinationRef.current.value);
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode(
+      { address: destinationRef.current.value },
+      (results, status) => {
+        if (status === "OK") {
+          const { location } = results[0].geometry;
+          changeDestination({ lat: location.lat(), lng: location.lng() });
+          panToDestination({ lat: location.lat(), lng: location.lng() });
+        } else {
+          alert(
+            "Geocode was not successful for the following reason: " + status
+          );
+        }
+      }
+    );
+
     const directionsService = new google.maps.DirectionsService();
     const results = await directionsService.route({
       origin: currentPosition,
@@ -32,8 +51,7 @@ function Search(props) {
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
-  }
-
+  };
   // 清除全部內容
   const clearRoute = () => {
     setDirectionsResponse(null);
@@ -42,11 +60,8 @@ function Search(props) {
     destinationRef.current.value = "";
   };
 
-  console.log(distance);
-  console.log(duration);
-
   return (
-    <div className={style.content} onSelect={() => {}}>
+    <div className={style.content}>
       <div className={style.inputBox}>
         <Autocomplete>
           <InputUI
@@ -73,7 +88,7 @@ function Search(props) {
         <TiLocationArrowOutline
           className={style.tiLocation}
           size={30}
-          onClick={() => defaultCenter()}
+          onClick={() => currentCenter()}
         />
       </div>
     </div>
