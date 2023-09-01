@@ -19,7 +19,7 @@
   grid-template-rows: repeat(2, 2rem);
   grid-template-areas:
     "inputBox inputBox buttonBox del"
-    "distanceBox durationBox . userCenter";
+    "distanceBox durationBox durationBox userCenter";
 }
 
 .inputBox {

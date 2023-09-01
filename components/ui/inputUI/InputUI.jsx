@@ -10,6 +10,8 @@ const InputUI = React.forwardRef((props, ref) => {
     inputStyle,
     inputRef,
     inputPlaceholder,
+    value,
+    onChange,
   } = props;
   return (
     <div className={style[inputStyle]}>
@@ -19,6 +21,8 @@ const InputUI = React.forwardRef((props, ref) => {
         id={inputId}
         ref={inputRef}
         placeholder={inputPlaceholder}
+        onChange={onChange}
+        value={value}
         required
       ></input>
     </div>
