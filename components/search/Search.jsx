@@ -54,8 +54,6 @@ function Search(props) {
             inputType="text"
             inputPlaceholder="Destination"
             inputRef={destinationRef}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
           />
         </Autocomplete>
       </div>

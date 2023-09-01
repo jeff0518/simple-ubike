@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   GoogleMap,
   MarkerF,
@@ -10,26 +10,28 @@ import Search from "../search/Search";
 import style from "./Map.module.scss";
 
 function Map() {
-  const mapRef = useRef();
-  const [time, setTime] = useState(null);
-  //設定計算路線所需 state
-  const [destination, setDestination] = useState();
-  const [directionsResponse, setDirectionsResponse] = useState(null);
-  //設定使用者現在位置
-  const [currentPosition, setCurrentPosition] = useState();
-  //設定回到原點，在<GoogleMap>設定 onLoad={(map) => setMap(map)}
-  const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
-
   //設定預設中心點（台北101）
   const defaultCenter = useMemo(
     () => ({ lat: 25.033671, lng: 121.564427 }),
     []
   );
 
+  const mapRef = useRef();
+  const [time, setTime] = useState(null);
+  //設定計算路線所需 state
+  const [destination, setDestination] = useState();
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+  //設定使用者現在位置
+  const [currentPosition, setCurrentPosition] = useState(defaultCenter);
+  //設定回到原點，在<GoogleMap>設定 onLoad={(map) => setMap(map)}
+  const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
+
   //返回預設位子或是使用者現在位子
   const panToDefaultCenterHandle = () => {
-    map.panTo(defaultCenter);
+    map.panTo(currentPosition);
   };
+
+  const panToDestinationHandle = () => {};
 
   //定義了地圖的一些選項
   const options = useMemo(
@@ -67,6 +69,22 @@ function Map() {
     setTime(newTime);
   };
 
+  // 拿取當前使用者位子
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCurrentPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      () => {
+        console.log("無法顯示或拒絕定位");
+        setCurrentPosition(defaultCenter);
+      }
+    );
+  }, []);
+
   return (
     <div className={style.content}>
       <Search
@@ -78,17 +96,19 @@ function Map() {
       {/* zoom負責縮放、center地圖中心 */}
       <GoogleMap
         zoom={16}
-        center={defaultCenter}
+        center={currentPosition}
         options={options}
         mapContainerClassName={style.map_container}
         onLoad={(map) => setMap(map)}
         onCenterChanged={centerChangeHandler}
       >
         {/* react18要改用MarkerF不能用Marker */}
-        <MarkerF position={defaultCenter} />
-        {directionsResponse && (
+        <MarkerF position={currentPosition} />
+
+        {/* 顯示從Ａ到Ｂ的路線 */}
+        {/* {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
-        )}
+        )} */}
         <Circle center={defaultCenter} radius={15000} options={farOptions} />
       </GoogleMap>
       {/* <button onClick={() => map.panTo(defaultCenter)}>回到預設點</button> */}
