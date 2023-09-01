@@ -1,8 +1,4 @@
 import { TiDelete, TiLocationArrowOutline } from "react-icons/ti";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
 
 import InputUI from "../ui/inputUI/InputUI";
@@ -21,14 +17,7 @@ function Search(props) {
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const destinationRef = useRef();
-  const {
-    ready,
-    value,
-    setValue,
-    suggestions: { status, data },
-    clearSuggestions,
-  } = usePlacesAutocomplete();
-
+  //抓取input內容並計算距離跟時間
   async function calculateRoute() {
     if (destinationRef.current.value === "") {
       return;
@@ -38,13 +27,14 @@ function Search(props) {
     const results = await directionsService.route({
       origin: currentPosition,
       destination: destinationRef.current.value,
-      travelMode: google.maps.TravelMode.DRIVING,
+      travelMode: google.maps.TravelMode.BICYCLING,
     });
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   }
 
+  // 清除全部內容
   const clearRoute = () => {
     setDirectionsResponse(null);
     setDistance("");

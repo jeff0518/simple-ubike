@@ -12,12 +12,11 @@ import style from "./Map.module.scss";
 function Map() {
   const mapRef = useRef();
   const [time, setTime] = useState(null);
+  //設定計算路線所需 state
   const [destination, setDestination] = useState();
   const [directionsResponse, setDirectionsResponse] = useState(null);
   //設定使用者現在位置
-
-  const [showPosition, setShoePosition] = useState(false);
-
+  const [currentPosition, setCurrentPosition] = useState();
   //設定回到原點，在<GoogleMap>設定 onLoad={(map) => setMap(map)}
   const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
 
@@ -26,8 +25,8 @@ function Map() {
     () => ({ lat: 25.033671, lng: 121.564427 }),
     []
   );
-  const [currentPosition, setCurrentPosition] = useState(defaultCenter);
 
+  //返回預設位子或是使用者現在位子
   const panToDefaultCenterHandle = () => {
     map.panTo(defaultCenter);
   };
@@ -43,6 +42,7 @@ function Map() {
     []
   );
 
+  // 抓取現在螢幕中心點
   const onLoad = useCallback((map) => {
     mapRef.current = map;
     setMap(map);
@@ -52,6 +52,8 @@ function Map() {
   const changeDestinationHandle = (newValue) => {
     setDestination(newValue);
   };
+
+  //更換中心點的function
   const centerChangeHandler = () => {
     if (time) {
       clearTimeout(time);
@@ -65,8 +67,6 @@ function Map() {
     setTime(newTime);
   };
 
-  console.log("destination = " + destination);
-  console.log("currentPosition = " + currentPosition);
   return (
     <div className={style.content}>
       <Search
