@@ -6,6 +6,7 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import Search from "../search/Search";
+import locationPerson from "../utils/markerIcon/location.png";
 
 import style from "./Map.module.scss";
 
@@ -37,6 +38,9 @@ function Map() {
   const [currentPosition, setCurrentPosition] = useState(defaultCenter);
   //設定回到原點，在<GoogleMap>設定 onLoad={(map) => setMap(map)}
   const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
+  const iconLocation = {
+    url: locationPerson,
+  };
 
   //返回預設位子或是使用者現在位子
   const panToCurrentCenterHandle = () => {
@@ -77,7 +81,7 @@ function Map() {
     const newTime = setTimeout(() => {
       if (map) {
         const newCenter = map.getCenter();
-        // console.log(newCenter.lat(), newCenter.lng());
+        setDestination({ lat: newCenter.lat(), lng: newCenter.lng() });
       }
     }, 500);
     setTime(newTime);
@@ -114,17 +118,24 @@ function Map() {
         center={currentPosition}
         options={options}
         mapContainerClassName={style.map_container}
-        onLoad={(map) => setMap(map)}
+        onLoad={onLoad}
         onCenterChanged={centerChangeHandler}
       >
         {/* react18要改用MarkerF不能用Marker */}
-        <MarkerF position={currentPosition} />
-        {directionsResponse && <MarkerF position={destination} />}
+        <MarkerF position={currentPosition} icon={iconLocation} />
+        {directionsResponse && (
+          <>
+            <MarkerF
+              position={destination}
+              icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+            />
+            <Circle center={destination} radius={500} options={closeOptions} />
+          </>
+        )}
         {/* 顯示從Ａ到Ｂ的路線 */}
         {/* {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )} */}
-        <Circle center={defaultCenter} radius={15000} options={farOptions} />
       </GoogleMap>
     </div>
   );
