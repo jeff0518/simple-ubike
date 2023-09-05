@@ -6,6 +6,7 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import Search from "../search/Search";
+import { getYouBike2Data } from "../utils/api/getYouBikeAPI";
 import locationPerson from "../utils/markerIcon/location.png";
 
 import style from "./Map.module.scss";
@@ -38,6 +39,17 @@ function Map() {
   const [currentPosition, setCurrentPosition] = useState(defaultCenter);
   //設定回到原點，在<GoogleMap>設定 onLoad={(map) => setMap(map)}
   const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
+  const [coordinates, setCoordinates] = useState({});
+  const [bounds, setBounds] = useState(null);
+
+  // 抓取資料
+  const [places, setPlaces] = useState([]);
+  useEffect(() => {
+    getYouBike2Data().then((data) => {
+      setPlaces(data);
+    });
+  }, []);
+
   const iconLocation = {
     url: locationPerson,
   };
@@ -123,6 +135,14 @@ function Map() {
       >
         {/* react18要改用MarkerF不能用Marker */}
         <MarkerF position={currentPosition} icon={iconLocation} />
+        {places.map((data) => {
+          return (
+            <MarkerF
+              key={data.sno}
+              position={{ lat: data.lat, lng: data.lng }}
+            />
+          );
+        })}
         {directionsResponse && (
           <>
             <MarkerF
