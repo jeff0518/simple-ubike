@@ -1,15 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  GoogleMap,
-  MarkerF,
-  Circle,
-  DirectionsRenderer,
-} from "@react-google-maps/api";
+import { GoogleMap, MarkerF, Circle } from "@react-google-maps/api";
 import Search from "../search/Search";
 import { getYouBike2Data } from "../utils/api/getYouBikeAPI";
-import locationPerson from "../utils/markerIcon/location.png";
+import locationPerson from "../../public/images/location.png";
 
 import style from "./Map.module.scss";
+import { redirect } from "next/dist/server/api-utils";
 
 export function debounce(fn, delay = 500) {
   let timer;
@@ -51,8 +47,25 @@ function Map() {
   }, []);
 
   const iconLocation = {
-    url: locationPerson,
+    url: "/images/location.png",
+    scaledSize: { width: 36, height: 36 },
   };
+
+  const iconBike = {
+    url: "https://icon-library.com/images/cycling-icon-png/cycling-icon-png-15.jpg",
+    scaledSize: { width: 36, height: 36 },
+  };
+
+  //過濾掉1公里外的站點
+  // const filteredMarkers = places.filter((marker) => {
+  //   const markerDistance =
+  //     google.maps.geometry.spherical.computeDistanceBetween(
+  //       new google.maps.LatLng(currentPosition),
+  //       new google.maps.LatLng(marker.lat, marker.lng)
+  //     );
+
+  //   return markerDistance < 1000;
+  // });
 
   //返回預設位子或是使用者現在位子
   const panToCurrentCenterHandle = () => {
@@ -116,48 +129,68 @@ function Map() {
   }, []);
 
   return (
-    <div className={style.content}>
-      <Search
-        currentCenter={panToCurrentCenterHandle}
-        changeDestination={changeDestinationHandle}
-        currentPosition={currentPosition}
-        setDirectionsResponse={setDirectionsResponse}
-        panToDestination={panToDestinationHandle}
-      />
-      {/* zoom負責縮放、center地圖中心 */}
-      <GoogleMap
-        zoom={16}
-        center={currentPosition}
-        options={options}
-        mapContainerClassName={style.map_container}
-        onLoad={onLoad}
-        onCenterChanged={centerChangeHandler}
-      >
-        {/* react18要改用MarkerF不能用Marker */}
-        <MarkerF position={currentPosition} icon={iconLocation} />
-        {places.map((data) => {
-          return (
-            <MarkerF
-              key={data.sno}
-              position={{ lat: data.lat, lng: data.lng }}
-            />
-          );
-        })}
-        {directionsResponse && (
-          <>
-            <MarkerF
-              position={destination}
-              icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-            />
-            <Circle center={destination} radius={500} options={closeOptions} />
-          </>
-        )}
-        {/* 顯示從Ａ到Ｂ的路線 */}
-        {/* {directionsResponse && (
+    <>
+      <div className={style.content}>
+        <Search
+          currentCenter={panToCurrentCenterHandle}
+          changeDestination={changeDestinationHandle}
+          currentPosition={currentPosition}
+          setDirectionsResponse={setDirectionsResponse}
+          panToDestination={panToDestinationHandle}
+        />
+        {/* zoom負責縮放、center地圖中心 */}
+        <GoogleMap
+          zoom={16}
+          center={currentPosition}
+          options={options}
+          mapContainerClassName={style.map_container}
+          onLoad={onLoad}
+          onCenterChanged={centerChangeHandler}
+        >
+          {/* react18要改用MarkerF不能用Marker */}
+          <MarkerF position={currentPosition} icon={iconLocation} />
+          {places.map((data) => {
+            let amount = null;
+            if (data.sbi > 3) {
+              amount = true;
+            } else {
+              amount = false;
+            }
+            return (
+              <MarkerF
+                key={data.sbi}
+                position={{ lat: data.lat, lng: data.lng }}
+                icon={
+                  amount
+                    ? iconBike
+                    : {
+                        url: "/images/bike.png",
+                        scaledSize: { width: 36, height: 36 },
+                      }
+                }
+              />
+            );
+          })}
+          {directionsResponse && (
+            <>
+              <MarkerF
+                position={destination}
+                icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+              />
+              <Circle
+                center={destination}
+                radius={500}
+                options={closeOptions}
+              />
+            </>
+          )}
+          {/* 顯示從Ａ到Ｂ的路線 */}
+          {/* {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )} */}
-      </GoogleMap>
-    </div>
+        </GoogleMap>
+      </div>
+    </>
   );
 }
 

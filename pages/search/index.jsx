@@ -1,6 +1,7 @@
 import { getSession } from "next-auth/react";
 //從useLoadScript()改成這個
 import { useJsApiLoader } from "@react-google-maps/api";
+import Script from "next/script";
 import Map from "../../components/map/Map";
 
 export async function getServerSideProps(context) {
