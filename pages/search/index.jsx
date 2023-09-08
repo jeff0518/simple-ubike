@@ -3,6 +3,7 @@ import { getSession } from "next-auth/react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import Script from "next/script";
 import Map from "../../components/map/Map";
+import { useMemo } from "react";
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
@@ -22,13 +23,14 @@ export async function getServerSideProps(context) {
 }
 
 function SearchAllPage() {
-  const libraries = ["places"];
+  const libraries = useMemo(() => ["places"], []);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
     libraries,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
+
   return (
     <>
       <Map />

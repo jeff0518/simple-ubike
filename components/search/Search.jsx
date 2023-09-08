@@ -1,12 +1,11 @@
 import { TiDelete, TiLocationArrowOutline } from "react-icons/ti";
 import { Autocomplete } from "@react-google-maps/api";
-import { getGeocode, getLatLng } from "use-places-autocomplete";
 
 import InputUI from "../ui/inputUI/InputUI";
 import ButtonUI from "../ui/buttonUI/ButtonUI";
 
 import style from "./Search.module.scss";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 function Search(props) {
   const {
@@ -65,6 +64,7 @@ function Search(props) {
       <div className={style.inputBox}>
         <Autocomplete>
           <InputUI
+            inputId="search__destination"
             inputStyle="search"
             inputType="text"
             inputPlaceholder="Destination"

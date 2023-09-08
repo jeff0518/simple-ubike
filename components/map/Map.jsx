@@ -171,7 +171,7 @@ function Map() {
             }
             return (
               <MarkerF
-                key={data.sbi}
+                key={data.sno}
                 position={{ lat: data.lat, lng: data.lng }}
                 onClick={() => showModalHandler(data)}
                 icon={
