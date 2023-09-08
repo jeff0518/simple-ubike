@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GoogleMap, MarkerF, Circle } from "@react-google-maps/api";
 import Search from "../search/Search";
 import { getYouBike2Data } from "../utils/api/getYouBikeAPI";
+import Modal from "../modal/Modal";
 import locationPerson from "../../public/images/location.png";
 
 import style from "./Map.module.scss";
@@ -35,8 +36,8 @@ function Map() {
   const [currentPosition, setCurrentPosition] = useState(defaultCenter);
   //設定回到原點，在<GoogleMap>設定 onLoad={(map) => setMap(map)}
   const [map, setMap] = useState(/** @type google.maps.Map  */ (null));
-  const [coordinates, setCoordinates] = useState({});
-  const [bounds, setBounds] = useState(null);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [clickData, setClickData] = useState();
 
   // 抓取資料
   const [places, setPlaces] = useState([]);
@@ -112,6 +113,18 @@ function Map() {
     setTime(newTime);
   };
 
+  // 點擊Marker
+  const showModalHandler = (props) => {
+    setIsShowModal(true);
+    setClickData(props);
+  };
+
+  // 關閉資訊欄
+  const delShowModalHandler = () => {
+    setIsShowModal(false);
+    setClickData("");
+  };
+
   // 拿取當前使用者位子
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -160,6 +173,7 @@ function Map() {
               <MarkerF
                 key={data.sbi}
                 position={{ lat: data.lat, lng: data.lng }}
+                onClick={() => showModalHandler(data)}
                 icon={
                   amount
                     ? iconBike
@@ -171,6 +185,9 @@ function Map() {
               />
             );
           })}
+          {isShowModal && (
+            <Modal data={clickData} onClose={delShowModalHandler} />
+          )}
           {directionsResponse && (
             <>
               <MarkerF
